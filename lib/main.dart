@@ -17,7 +17,6 @@ class GestaoAromatizantesApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // A CORREÇÃO ESTÁ AQUI: a "home" é a TelaPrincipal
       home: const TelaPrincipal(),
       debugShowCheckedModeBanner: false,
     );
