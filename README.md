@@ -1,12 +1,10 @@
 # Gestão Aromatizantes 🧪✨
 
-E aí! 👋 Este é o repositório do meu primeiro app em Flutter, criado para ajudar a gerenciar minha mãe com a sua pequena empresa de aromatizantes artesanais.
+E aí! 👋 Este é o repositório do meu primeiro app em Flutter, criado para ajudar a minha mãe a gerenciar sua pequena empresa de aromatizantes artesanais.
 
 ## Sobre o App 📱
 
-Este é o meu app de gestão interna, uma ferramenta que nasceu da necessidade de organizar o estoque e que foi crescendo passo a passo. O objetivo é ter um controle simples e visual de todos os produtos acabados e da matéria-prima que uso na produção.
-
-Feito com muito carinho e aprendizado!
+Este é o meu app de gestão interna, uma ferramenta que nasceu da necessidade de organizar um estoque e espero que cresça passo a passo. Por enquanto o objetivo é ter um controle simples e visual de todos os produtos acabados e da matéria-prima que uso na produção.
 
 ## Funcionalidades Atuais 🚀
 
@@ -35,4 +33,4 @@ Atualmente, o app de gestão conta com:
 
 ## Uma Jornada de Aprendizado
 
-Este projeto foi meu campo de aprendizado em Flutter. Cada tela, botão e funcionalidade foi construído passo a passo com a ajuda de um parceiro de programação IA, transformando ideias em código. É a prova de que com a ajuda certa, qualquer um pode começar a programar!
+Este projeto foi meu campo de aprendizado em Flutter. Cada tela, botão e funcionalidade foi construído passo a passo. O objetivo é que um dia ele se torne um app robusto para controle de estoque e também para ajudar a gerenciar negócios num geral, dando sujestões de precificação de produtos e outros.
