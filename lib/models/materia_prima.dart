@@ -1,7 +1,7 @@
 class MateriaPrima {
   String nome;
-  double quantidade; // Usamos double para permitir valores como 10.5g
-  String unidade; // Ex: "ml", "g", "un"
+  double quantidade; 
+  String unidade; 
 
   MateriaPrima({
     required this.nome,
