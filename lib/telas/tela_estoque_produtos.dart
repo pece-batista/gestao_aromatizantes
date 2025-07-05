@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/produto.dart';
+import '../models/ingrediente.dart';
 
 class TelaEstoqueProdutos extends StatefulWidget {
   const TelaEstoqueProdutos({super.key});
@@ -30,8 +31,34 @@ class _TelaEstoqueProdutosState extends State<TelaEstoqueProdutos> {
     } else {
       setState(() {
         _produtos = [
-          Produto(nome: 'Aromatizante de Lavanda 50ml', quantidade: 15),
-          Produto(nome: 'Aromatizante de Alecrim 50ml', quantidade: 8),
+          Produto(
+            nome: 'Aromatizante de Lavanda 50ml',
+            quantidade: 15,
+            unidade: 'un',
+            receita: [
+              Ingrediente(
+                nomeItem: 'Álcool de Cereais',
+                quantidadeUsada: 40,
+                unidade: 'ml',
+              ),
+              Ingrediente(
+                nomeItem: 'Essência de Lavanda',
+                quantidadeUsada: 10,
+                unidade: 'ml',
+              ),
+              Ingrediente(
+                nomeItem: 'Vidro 50ml com Tampa',
+                quantidadeUsada: 1,
+                unidade: 'un',
+              ),
+            ],
+          ),
+          Produto(
+            nome: 'Aromatizante de Alecrim 50ml',
+            quantidade: 8,
+            unidade: 'un',
+            receita: [],
+          ),
         ];
       });
     }
@@ -62,8 +89,11 @@ class _TelaEstoqueProdutosState extends State<TelaEstoqueProdutos> {
   }
 
   Future<void> _mostrarDialogoAdicionarProduto() async {
-    final TextEditingController nomeController = TextEditingController();
-    final TextEditingController qtdController = TextEditingController();
+    final nomeController = TextEditingController();
+    final qtdController = TextEditingController();
+    String unidadeSelecionada =
+        'un'; // Valor inicial para o dropdown de unidade
+
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -75,15 +105,46 @@ class _TelaEstoqueProdutosState extends State<TelaEstoqueProdutos> {
                 TextField(
                   controller: nomeController,
                   decoration: const InputDecoration(
-                    hintText: 'Nome do produto',
+                    labelText: 'Nome do produto',
                   ),
                 ),
-                TextField(
-                  controller: qtdController,
-                  decoration: const InputDecoration(
-                    hintText: 'Quantidade inicial',
-                  ),
-                  keyboardType: TextInputType.number,
+                const SizedBox(height: 10),
+                // Layout em linha para Quantidade e Unidade
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 2, // Dá mais espaço para a quantidade
+                      child: TextField(
+                        controller: qtdController,
+                        decoration: const InputDecoration(
+                          labelText: 'Quantidade',
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      flex: 1, // Dá menos espaço para a unidade
+                      child: DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(labelText: 'Un.'),
+                        value: unidadeSelecionada,
+                        items: ['un', 'ml', 'g', 'kg']
+                            .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            })
+                            .toList(),
+                        onChanged: (String? newValue) {
+                          if (newValue != null) {
+                            unidadeSelecionada = newValue;
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -100,7 +161,15 @@ class _TelaEstoqueProdutosState extends State<TelaEstoqueProdutos> {
                 final int? quantidade = int.tryParse(qtdController.text);
                 if (nome.isNotEmpty && quantidade != null) {
                   setState(() {
-                    _produtos.add(Produto(nome: nome, quantidade: quantidade));
+                    // Adiciona o produto com a unidade selecionada
+                    _produtos.add(
+                      Produto(
+                        nome: nome,
+                        quantidade: quantidade,
+                        unidade: unidadeSelecionada,
+                        receita: [],
+                      ),
+                    );
                   });
                   _salvarProdutos();
                   Navigator.of(context).pop();
@@ -148,6 +217,7 @@ class _TelaEstoqueProdutosState extends State<TelaEstoqueProdutos> {
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 subtitle: const Text('Quantidade em estoque:'),
+                // Atualiza a exibição da quantidade para incluir a unidade
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -156,7 +226,7 @@ class _TelaEstoqueProdutosState extends State<TelaEstoqueProdutos> {
                       onPressed: () => _diminuirEstoque(index),
                     ),
                     Text(
-                      '${produto.quantidade}',
+                      '${produto.quantidade} ${produto.unidade}', // Mostra a unidade aqui
                       style: const TextStyle(fontSize: 18),
                     ),
                     IconButton(

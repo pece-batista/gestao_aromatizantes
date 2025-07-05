@@ -1,7 +1,7 @@
 class MateriaPrima {
   String nome;
-  double quantidade; 
-  String unidade; 
+  double quantidade;
+  String unidade;
 
   MateriaPrima({
     required this.nome,

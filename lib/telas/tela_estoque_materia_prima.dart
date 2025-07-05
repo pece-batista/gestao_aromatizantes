@@ -13,14 +13,13 @@ class TelaEstoqueMateriaPrima extends StatefulWidget {
 
 class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
   List<MateriaPrima> _materiasPrimas = [];
+  final String _chaveSalvar = 'materia_prima_estoque';
 
   @override
   void initState() {
     super.initState();
     _carregarDados();
   }
-
-  final String _chaveSalvar = 'materia_prima_estoque';
 
   Future<void> _carregarDados() async {
     final prefs = await SharedPreferences.getInstance();
@@ -65,15 +64,15 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
 
   void _aumentarEstoque(int index) {
     setState(() {
-      _materiasPrimas[index].quantidade++;
+      _materiasPrimas.elementAt(index).quantidade++;
     });
     _salvarDados();
   }
 
   void _diminuirEstoque(int index) {
-    if (_materiasPrimas[index].quantidade > 0) {
+    if (_materiasPrimas.elementAt(index).quantidade > 0) {
       setState(() {
-        _materiasPrimas[index].quantidade--;
+        _materiasPrimas.elementAt(index).quantidade--;
       });
       _salvarDados();
     }
@@ -82,7 +81,8 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
   Future<void> _mostrarDialogoAdicionar() async {
     final nomeController = TextEditingController();
     final qtdController = TextEditingController();
-    final unidadeController = TextEditingController();
+    String unidadeSelecionada = 'ml';
+
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -94,21 +94,50 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
                 TextField(
                   controller: nomeController,
                   decoration: const InputDecoration(
-                    hintText: 'Nome da matéria-prima',
+                    labelText: 'Nome da matéria-prima',
                   ),
                 ),
-                TextField(
-                  controller: qtdController,
-                  decoration: const InputDecoration(hintText: 'Quantidade'),
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                ),
-                TextField(
-                  controller: unidadeController,
-                  decoration: const InputDecoration(
-                    hintText: 'Unidade (ml, g, un)',
-                  ),
+                const SizedBox(height: 10),
+                // Organizando "Quantidade" e "Unidade" em uma Row
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: qtdController,
+                        decoration: const InputDecoration(
+                          labelText: 'Quantidade',
+                        ),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(
+                          labelText: 'Unidade',
+                          border: OutlineInputBorder(),
+                        ),
+                        value: unidadeSelecionada,
+                        items: ['ml', 'g', 'un', 'kg']
+                            .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            })
+                            .toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            if (newValue != null) {
+                              unidadeSelecionada = newValue;
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -123,16 +152,13 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
               onPressed: () {
                 final nome = nomeController.text;
                 final quantidade = double.tryParse(qtdController.text);
-                final unidade = unidadeController.text;
-                if (nome.isNotEmpty &&
-                    quantidade != null &&
-                    unidade.isNotEmpty) {
+                if (nome.isNotEmpty && quantidade != null) {
                   setState(() {
                     _materiasPrimas.add(
                       MateriaPrima(
                         nome: nome,
                         quantidade: quantidade,
-                        unidade: unidade,
+                        unidade: unidadeSelecionada,
                       ),
                     );
                   });
@@ -148,7 +174,7 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
   }
 
   Future<void> _mostrarDialogoEditarQuantidade(int index) async {
-    final item = _materiasPrimas[index];
+    final item = _materiasPrimas.elementAt(index);
     final qtdController = TextEditingController(
       text: item.quantidade.toString(),
     );
@@ -176,7 +202,8 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
                 final novaQuantidade = double.tryParse(qtdController.text);
                 if (novaQuantidade != null) {
                   setState(() {
-                    _materiasPrimas[index].quantidade = novaQuantidade;
+                    _materiasPrimas.elementAt(index).quantidade =
+                        novaQuantidade;
                   });
                   _salvarDados();
                   Navigator.of(context).pop();
@@ -196,7 +223,7 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
       body: ListView.builder(
         itemCount: _materiasPrimas.length,
         itemBuilder: (context, index) {
-          final item = _materiasPrimas[index];
+          final item = _materiasPrimas.elementAt(index);
           return Dismissible(
             key: Key(
               item.nome + DateTime.now().millisecondsSinceEpoch.toString(),

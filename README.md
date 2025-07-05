@@ -11,25 +11,25 @@ Este é o meu app de gestão interna, uma ferramenta que nasceu da necessidade d
 Atualmente, o app de gestão conta com:
 
 * **Duas Seções de Estoque:**
-    * 📦 **Produtos Acabados:** Para controlar os aromatizantes que já estão prontos para a venda.
-    * ⚗️ **Matéria-Prima:** Para gerenciar vidros, essências, álcool, pavios, etc.
+  * 📦 **Produtos Acabados:** Para controlar os aromatizantes que já estão prontos para a venda.
+  * ⚗️ **Matéria-Prima:** Para gerenciar vidros, essências, álcool, pavios, etc.
 
 * **Gerenciamento Completo:**
-    * Adicionar novos itens em cada categoria.
-    * Editar a quantidade com botões de `+` e `-` ou tocando no número para digitar o valor exato.
-    * Remover itens da lista simplesmente arrastando para o lado.
+  * Adicionar novos itens em cada categoria.
+  * Editar a quantidade com botões de `+` e `-` ou tocando no número para digitar o valor exato.
+  * Remover itens da lista simplesmente arrastando para o lado.
 
 * **Persistência de Dados:**
-    * O app salva todas as alterações no armazenamento do celular. Nada se perde ao fechar e abrir de novo!
+  * O app salva todas as alterações no armazenamento do celular. Nada se perde ao fechar e abrir de novo!
 
 * **Navegação Simples:**
-    * Um menu inferior permite alternar facilmente entre as duas telas de estoque.
+  * Um menu inferior permite alternar facilmente entre as duas telas de estoque.
 
 ## Como Rodar o Projeto
 
-1.  Clone este repositório.
-2.  No terminal, dentro da pasta do projeto, rode `flutter pub get` para instalar as dependências.
-3.  Rode `flutter run` para iniciar o app no emulador ou no seu celular.
+1. Clone este repositório.
+2. No terminal, dentro da pasta do projeto, rode `flutter pub get` para instalar as dependências.
+3. Rode `flutter run` para iniciar o app no emulador ou no seu celular.
 
 ## Uma Jornada de Aprendizado
 

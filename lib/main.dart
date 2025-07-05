@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'telas/tela_estoque_produtos.dart';
 import 'telas/tela_estoque_materia_prima.dart';
+import 'telas/tela_producao.dart';
+import 'telas/tela_receitas.dart';
 
 void main() {
   runApp(const GestaoAromatizantesApp());
@@ -36,6 +38,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   static const List<Widget> _telas = <Widget>[
     TelaEstoqueProdutos(),
     TelaEstoqueMateriaPrima(),
+    TelaReceitas(),
+    TelaProducao(),
   ];
 
   void _aoTocarNaAba(int index) {
@@ -49,6 +53,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     return Scaffold(
       body: Center(child: _telas.elementAt(_indiceAbaSelecionada)),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.inventory_2_outlined),
@@ -57,6 +62,14 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
           BottomNavigationBarItem(
             icon: Icon(Icons.science_outlined),
             label: 'Matéria-Prima',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book_outlined),
+            label: 'Receitas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.engineering_outlined),
+            label: 'Produção',
           ),
         ],
         currentIndex: _indiceAbaSelecionada,
