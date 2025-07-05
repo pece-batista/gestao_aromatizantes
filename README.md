@@ -10,20 +10,23 @@ Este é o meu app de gestão interna, uma ferramenta que nasceu da necessidade d
 
 Atualmente, o app de gestão conta com:
 
-* **Duas Seções de Estoque:**
+* **Navegação Modular:**
+  * Um menu inferior com 4 seções principais para facilitar o acesso: Produtos, Matéria-Prima, Receitas e Produção.
+
+* **Módulos de Estoque:**
   * 📦 **Produtos Acabados:** Para controlar os aromatizantes que já estão prontos para a venda.
   * ⚗️ **Matéria-Prima:** Para gerenciar vidros, essências, álcool, pavios, etc.
 
-* **Gerenciamento Completo:**
-  * Adicionar novos itens em cada categoria.
+* **Gestão de Receitas:**
+  * Uma seção dedicada para criar e futuramente listar as receitas de cada produto, definindo os ingredientes e as quantidades necessárias.
+
+* **Gerenciamento Completo de Itens:**
+  * Adicionar novos itens em cada categoria de estoque.
   * Editar a quantidade com botões de `+` e `-` ou tocando no número para digitar o valor exato.
   * Remover itens da lista simplesmente arrastando para o lado.
 
 * **Persistência de Dados:**
   * O app salva todas as alterações no armazenamento do celular. Nada se perde ao fechar e abrir de novo!
-
-* **Navegação Simples:**
-  * Um menu inferior permite alternar facilmente entre as duas telas de estoque.
 
 ## Como Rodar o Projeto
 
