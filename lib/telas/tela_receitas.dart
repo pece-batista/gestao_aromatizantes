@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Importa os formatadores
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/ingrediente.dart';
 import '../models/receita.dart';
@@ -12,6 +13,7 @@ class TelaReceitas extends StatefulWidget {
 }
 
 class _TelaReceitasState extends State<TelaReceitas> {
+  //... (o início da classe e as funções de carregar/salvar continuam iguais)
   List<Receita> _listaDeReceitas = [];
   final String _chaveSalvar = 'lista_de_receitas';
 
@@ -51,8 +53,7 @@ class _TelaReceitasState extends State<TelaReceitas> {
 
     final ingredienteNomeController = TextEditingController();
     final ingredienteQtdController = TextEditingController();
-    String unidadeIngredienteSelecionada =
-        'g'; // Valor inicial para o novo dropdown
+    String unidadeIngredienteSelecionada = 'g';
 
     List<Ingrediente> ingredientesDaReceita = [];
 
@@ -67,7 +68,6 @@ class _TelaReceitasState extends State<TelaReceitas> {
               content: SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[
-                    // ... (campos de Informações da Receita e Item Produzido)
                     TextField(
                       controller: nomeReceitaController,
                       decoration: const InputDecoration(
@@ -86,7 +86,7 @@ class _TelaReceitasState extends State<TelaReceitas> {
                       ),
                     ),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: TextField(
@@ -97,11 +97,16 @@ class _TelaReceitasState extends State<TelaReceitas> {
                             keyboardType: const TextInputType.numberWithOptions(
                               decimal: true,
                             ),
+                            // VALIDAÇÃO ADICIONADA AQUI
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d*'),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(width: 10),
-                        SizedBox(
-                          width: 100,
+                        Expanded(
                           child: DropdownButtonFormField<String>(
                             decoration: const InputDecoration(labelText: 'Un.'),
                             value: unidadeResultanteSelecionada,
@@ -134,7 +139,6 @@ class _TelaReceitasState extends State<TelaReceitas> {
                       'Ingredientes Necessários',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    // Mostra a lista de ingredientes já adicionados
                     ...ingredientesDaReceita.map(
                       (ing) => ListTile(
                         title: Text(ing.nomeItem),
@@ -142,9 +146,8 @@ class _TelaReceitasState extends State<TelaReceitas> {
                         dense: true,
                       ),
                     ),
-                    // MUDANÇA AQUI: Mini-formulário de ingredientes agora com dropdown
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           flex: 3,
@@ -164,6 +167,12 @@ class _TelaReceitasState extends State<TelaReceitas> {
                             keyboardType: const TextInputType.numberWithOptions(
                               decimal: true,
                             ),
+                            // VALIDAÇÃO ADICIONADA AQUI
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d*'),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -257,6 +266,7 @@ class _TelaReceitasState extends State<TelaReceitas> {
     );
   }
 
+  //... (o método build() continua igual)
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -283,7 +293,7 @@ class _TelaReceitasState extends State<TelaReceitas> {
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
-                      'Produz: ${receita.itemResultanteQuantidade} ${receita.itemResultanteUnidade} de ${receita.itemResultanteNome}',
+                      'Produz: ${receita.itemResultanteQuantidade.toStringAsFixed(1)} ${receita.itemResultanteUnidade} de ${receita.itemResultanteNome}',
                     ),
                     trailing: const Icon(Icons.arrow_forward_ios),
                   ),

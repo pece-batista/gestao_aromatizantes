@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Importa os formatadores
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/materia_prima.dart';
 
@@ -20,6 +21,8 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
     super.initState();
     _carregarDados();
   }
+
+  //... (as funções de carregar, salvar, aumentar e diminuir continuam iguais)
 
   Future<void> _carregarDados() async {
     final prefs = await SharedPreferences.getInstance();
@@ -64,15 +67,15 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
 
   void _aumentarEstoque(int index) {
     setState(() {
-      _materiasPrimas.elementAt(index).quantidade++;
+      _materiasPrimas[index].quantidade++;
     });
     _salvarDados();
   }
 
   void _diminuirEstoque(int index) {
-    if (_materiasPrimas.elementAt(index).quantidade > 0) {
+    if (_materiasPrimas[index].quantidade > 0) {
       setState(() {
-        _materiasPrimas.elementAt(index).quantidade--;
+        _materiasPrimas[index].quantidade--;
       });
       _salvarDados();
     }
@@ -98,8 +101,8 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                // Organizando "Quantidade" e "Unidade" em uma Row
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: TextField(
@@ -110,6 +113,12 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
                         ),
+                        // VALIDAÇÃO ADICIONADA AQUI
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d+\.?\d*'),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -121,19 +130,14 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
                         ),
                         value: unidadeSelecionada,
                         items: ['ml', 'g', 'un', 'kg']
-                            .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            })
+                            .map(
+                              (v) => DropdownMenuItem(value: v, child: Text(v)),
+                            )
                             .toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            if (newValue != null) {
-                              unidadeSelecionada = newValue;
-                            }
-                          });
+                        onChanged: (v) {
+                          if (v != null) {
+                            unidadeSelecionada = v;
+                          }
                         },
                       ),
                     ),
@@ -174,7 +178,7 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
   }
 
   Future<void> _mostrarDialogoEditarQuantidade(int index) async {
-    final item = _materiasPrimas.elementAt(index);
+    final item = _materiasPrimas[index];
     final qtdController = TextEditingController(
       text: item.quantidade.toString(),
     );
@@ -189,6 +193,10 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
               hintText: 'Nova quantidade (${item.unidade})',
             ),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            // VALIDAÇÃO ADICIONADA AQUI
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*')),
+            ],
             autofocus: true,
           ),
           actions: <Widget>[
@@ -202,8 +210,7 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
                 final novaQuantidade = double.tryParse(qtdController.text);
                 if (novaQuantidade != null) {
                   setState(() {
-                    _materiasPrimas.elementAt(index).quantidade =
-                        novaQuantidade;
+                    _materiasPrimas[index].quantidade = novaQuantidade;
                   });
                   _salvarDados();
                   Navigator.of(context).pop();
@@ -216,6 +223,7 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
     );
   }
 
+  //... (o método build() continua igual)
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -223,7 +231,7 @@ class _TelaEstoqueMateriaPrimaState extends State<TelaEstoqueMateriaPrima> {
       body: ListView.builder(
         itemCount: _materiasPrimas.length,
         itemBuilder: (context, index) {
-          final item = _materiasPrimas.elementAt(index);
+          final item = _materiasPrimas[index];
           return Dismissible(
             key: Key(
               item.nome + DateTime.now().millisecondsSinceEpoch.toString(),

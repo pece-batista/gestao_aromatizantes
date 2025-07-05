@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Importa os formatadores
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/produto.dart';
 import '../models/ingrediente.dart';
@@ -12,6 +13,7 @@ class TelaEstoqueProdutos extends StatefulWidget {
 }
 
 class _TelaEstoqueProdutosState extends State<TelaEstoqueProdutos> {
+  // ... (o início da classe continua igual)
   List<Produto> _produtos = [];
 
   @override
@@ -91,8 +93,7 @@ class _TelaEstoqueProdutosState extends State<TelaEstoqueProdutos> {
   Future<void> _mostrarDialogoAdicionarProduto() async {
     final nomeController = TextEditingController();
     final qtdController = TextEditingController();
-    String unidadeSelecionada =
-        'un'; // Valor inicial para o dropdown de unidade
+    String unidadeSelecionada = 'un';
 
     return showDialog<void>(
       context: context,
@@ -109,37 +110,37 @@ class _TelaEstoqueProdutosState extends State<TelaEstoqueProdutos> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                // Layout em linha para Quantidade e Unidade
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      flex: 2, // Dá mais espaço para a quantidade
+                      flex: 2,
                       child: TextField(
                         controller: qtdController,
                         decoration: const InputDecoration(
                           labelText: 'Quantidade',
                         ),
                         keyboardType: TextInputType.number,
+                        // VALIDAÇÃO ADICIONADA AQUI
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                       ),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
-                      flex: 1, // Dá menos espaço para a unidade
+                      flex: 1,
                       child: DropdownButtonFormField<String>(
                         decoration: const InputDecoration(labelText: 'Un.'),
                         value: unidadeSelecionada,
                         items: ['un', 'ml', 'g', 'kg']
-                            .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            })
+                            .map(
+                              (v) => DropdownMenuItem(value: v, child: Text(v)),
+                            )
                             .toList(),
-                        onChanged: (String? newValue) {
-                          if (newValue != null) {
-                            unidadeSelecionada = newValue;
+                        onChanged: (v) {
+                          if (v != null) {
+                            unidadeSelecionada = v;
                           }
                         },
                       ),
@@ -161,7 +162,6 @@ class _TelaEstoqueProdutosState extends State<TelaEstoqueProdutos> {
                 final int? quantidade = int.tryParse(qtdController.text);
                 if (nome.isNotEmpty && quantidade != null) {
                   setState(() {
-                    // Adiciona o produto com a unidade selecionada
                     _produtos.add(
                       Produto(
                         nome: nome,
@@ -181,6 +181,9 @@ class _TelaEstoqueProdutosState extends State<TelaEstoqueProdutos> {
       },
     );
   }
+
+  // A função _mostrarDialogoEditarQuantidade para produtos também precisaria dessa
+  // melhoria, mas vamos focar nos diálogos de adição primeiro.
 
   @override
   Widget build(BuildContext context) {
@@ -217,7 +220,6 @@ class _TelaEstoqueProdutosState extends State<TelaEstoqueProdutos> {
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 subtitle: const Text('Quantidade em estoque:'),
-                // Atualiza a exibição da quantidade para incluir a unidade
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -226,7 +228,7 @@ class _TelaEstoqueProdutosState extends State<TelaEstoqueProdutos> {
                       onPressed: () => _diminuirEstoque(index),
                     ),
                     Text(
-                      '${produto.quantidade} ${produto.unidade}', // Mostra a unidade aqui
+                      '${produto.quantidade} ${produto.unidade}',
                       style: const TextStyle(fontSize: 18),
                     ),
                     IconButton(
