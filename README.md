@@ -1,32 +1,27 @@
-# Gestão Aromatizantes 🧪✨
+# CraftHub 🛠️✨
 
-E aí! 👋 Este é o repositório do meu primeiro app em Flutter, criado para ajudar a minha mãe a gerenciar sua pequena empresa de aromatizantes artesanais.
+E aí! 👋 Este é o repositório do **CraftHub**, um aplicativo de gestão para microempresas artesanais, construído com Flutter. O projeto nasceu de uma necessidade real: ajudar minha mãe a organizar o estoque e a produção de sua pequena empresa de aromatizantes.
 
 ## Sobre o App 📱
 
-Este é o meu app de gestão interna, uma ferramenta que nasceu da necessidade de organizar um estoque e espero que cresça passo a passo. Por enquanto o objetivo é ter um controle simples e visual de todos os produtos acabados e da matéria-prima que uso na produção.
+O CraftHub tem como objetivo ser um "hub" central para artesãos gerenciarem seus negócios. A ideia é criar uma ferramenta simples e visual para controlar o fluxo de produção, desde a matéria-prima até o produto final pronto para a venda.
 
 ## Funcionalidades Atuais 🚀
 
-Atualmente, o app de gestão conta com:
+O Painel de Controle do CraftHub é dividido em 4 módulos principais:
 
-* **Navegação Modular:**
-  * Um menu inferior com 4 seções principais para facilitar o acesso: Produtos, Matéria-Prima, Receitas e Produção.
+* **📦 Estoques:**
+  * Controle total sobre dois inventários separados: Matéria-Prima e Produtos Acabados.
+  * Funcionalidades completas de Adicionar, Editar quantidade (com clique ou digitando) e Remover itens (arrastando para o lado).
 
-* **Módulos de Estoque:**
-  * 📦 **Produtos Acabados:** Para controlar os aromatizantes que já estão prontos para a venda.
-  * ⚗️ **Matéria-Prima:** Para gerenciar vidros, essências, álcool, pavios, etc.
+* **📖 Gestão de Receitas:**
+  * Um sistema para criar e listar receitas detalhadas, definindo o item que ela produz e todos os ingredientes necessários com suas respectivas unidades de medida.
 
-* **Gestão de Receitas:**
-  * Uma seção dedicada para criar e futuramente listar as receitas de cada produto, definindo os ingredientes e as quantidades necessárias.
+* **⚙️ Registro de Produção (Em desenvolvimento):**
+  * A tela para registrar novas produções já foi criada. O próximo passo é implementar a lógica que consome do estoque de matéria-prima e adiciona ao estoque de produtos.
 
-* **Gerenciamento Completo de Itens:**
-  * Adicionar novos itens em cada categoria de estoque.
-  * Editar a quantidade com botões de `+` e `-` ou tocando no número para digitar o valor exato.
-  * Remover itens da lista simplesmente arrastando para o lado.
-
-* **Persistência de Dados:**
-  * O app salva todas as alterações no armazenamento do celular. Nada se perde ao fechar e abrir de novo!
+* **💾 Persistência de Dados:**
+  * Todas as informações (estoques, receitas, etc.) são salvas localmente no dispositivo, garantindo que nada se perca.
 
 ## Como Rodar o Projeto
 
